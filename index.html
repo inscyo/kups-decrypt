@@ -13,37 +13,12 @@
     <script crossorigin src="//cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
     <title>kups decrypt</title>
     <style type="text/css">
-      body { margin-top:20px; }
-      .panel-title {display: inline;font-weight: bold;}
-      .checkbox.pull-right { margin: 0; }
-      .pl-ziro { padding-left: 0px; }
-      .console{
+      body{margin-top:20px; overflow: hidden;}.panel-title{display:inline;font-weight:700}.checkbox.pull-right{margin:0}.pl-ziro{padding-left:0}.console{width:100%;height:200px;background-color:#2b2c25;border-radius:1px;padding:0 10px 20px 10px;overflow:auto}.console-d{vertical-align:top}.console-text{padding:10px 0 0 0;color:#71b710;font-size:15px;margin-block-start:0!important;margin-block-end:0!important}.console-i{border:0;background-color:transparent;width:100%;height:50%;outline:0;color:#71b710;padding-bottom:20px;resize:none}.form-group{margin-bottom:0!important}
+      #canvas{
         width: 100%;
-        height: 200px;
-        background-color: #2b2c25;
-        border-radius: 1px;
-        padding: 0px 10px 20px 10px;
-        overflow: auto;
-      }
-      .console-d{
-        vertical-align: top;
-      }
-      .console-text{
-        padding: 10px 0px 0px 0px;
-        color: #71b710;
-        font-size: 15px;
-        margin-block-start: 0 !important;
-        margin-block-end: 0 !important;
-      }
-      .console-i{
-        border: 0;
-        background-color: transparent;
-        width: 100%;
-        height: 50%;
-        outline: none;
-        color: #71b710;
-        padding-bottom: 20px;
-        resize: none;
+        height: 100vh;
+        position: absolute;
+        top: 0px;
       }
     </style>
   </head>
@@ -57,27 +32,41 @@
           this._toType = this._toType.bind(this);
           this._removeNewLine = this._removeNewLine.bind(this);
           this._txtLimit = this._txtLimit.bind(this);
-          this.state = { word: undefined, type: "decrypt", outputS: {
+          this.refs = React.createRef();
+          this.state = { 
+            word: undefined, 
+            cs1: atob("Q29weXJpZ2h0IChDKSBJbnNvbiBDb25jZXBjaW9uLiBBbGwgcmlnaHRzIHJlc2VydmVk"),
+            cs2: atob("UFMgR2l0aHViSW5zb25SZXBvRGVjcnlwdA=="),
+            in1: atob("bWFkZSB3aXRoIHJlYWN0SlMgLSB2ZXJzaW9uIDEuMC40"),
+            in2: atob("R2l0aHViIGNoYW5nZXMgbWFkZTog"),
+            in3: atob("TGF0ZXN0IDogMDEtMTItMjAyMCAxMjowNiBQbSBQaGlsaXBwaW5lIFN0YW5kYXJkIFRpbWUg"),
+            type: "decrypt", 
+            outputS: {
             borderRadius: "5px", 
-            display: "none" }}
+            display: "none" 
+          }}
         }
         _toType = function(e){
           let type = e.target.value;
           this.setState((rev) => ({ type: rev.type = type }));
-          console.log(this.state.type);
         }
         _toMount = function(e){
           let reverse = '', target = e.target.value;
           if (target.length > 0 && target.length < 41){
             for(let i=target.length-1; i>-1;i--) reverse += target[i];
-            this.setState((rev) => ({ word: rev.word = reverse,
+            this.setState((rev) => ({ 
+              word: rev.word = reverse,
               outputS: rev.outputS = {
               borderRadius: "5px",
              }}));
           } else if(target.length >= 41 && target.length > 0){
-            this.setState((rev) => ({ word: rev.word = <span style={{color: "red"}}>System Error</span> }));
+            this.setState((rev) => ({ 
+              word: rev.word = <span style={{color: "red"}}>System Error</span> 
+            }));
           } else{
-            this.setState((rev) => ({outputS: rev.outputS = {display: "none"}}))
+            this.setState((rev) => ({
+              outputS: rev.outputS = {display: "none"
+            }}));
           }
         }
         _removeNewLine = function(e){
@@ -95,35 +84,33 @@
         }
         render(){
           return (
-            <div class="col-md-4 justify-content-lg-center">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                            3am prayer group decrypt
-                        </h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="form-group">
-                            <label for="cardNumber">
-                                Word</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" autocomplete="off"  onChange={this._toMount} id="cardNumber" placeholder="Enter a word"
-                                    required autofocus />
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="console">
-                  <div class="console-d">
-                    <p className="console-text">Copyright (C) Inson Concepcion. All rights reserved</p>
-                    <p className="console-text">PS Github\Inson\Repo\Decrypt</p>
+            <div style={{width: "100%;", height: "100vh"}}>
+              <div class="col-md-4 justify-content-lg-center">
+                  <div class="panel panel-default">
+                      <div class="panel-heading">
+                          <h3 class="panel-title">Decrypt</h3>
+                      </div>
+                      <div class="panel-body">
+                          <div class="form-group">
+                              <div class="input-group">
+                                  <input type="text" class="form-control" autocomplete="off"  onChange={this._toMount} id="cardNumber" placeholder="Enter a word"
+                                      required autofocus />
+                                  <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+                              </div>
+                          </div>
+                      </div>
                   </div>
-                  <p className="console-text"><span style={this.state.outputS}>&gt; Output: "<span style={{textTransform: "uppercase"}}>{this.state.word}</span>"</span></p>
-                </div>
-                <br />
-                <p>&copy; made with reactJS - version 1.0.4</p>
-                <p>Github changes made: <br /> Latest : 01-12-2020 12:06 Pm Philippine Standard Time </p>
+                  <div className="console">
+                    <div class="console-d">
+                      <p className="console-text">{this.state.cs1}</p>
+                      <p className="console-text">Github\Inson\Repo\Decrypt</p>
+                    </div>
+                    <p className="console-text"><span style={this.state.outputS}>&gt; Output: "<span style={{textTransform: "uppercase"}}>{this.state.word}</span>"</span></p>
+                  </div>
+                  <br />
+                  <p>&copy; {this.state.in1}</p>
+                  <p>{this.state.in2} <br /> {this.state.in3}</p>
+              </div>
             </div>
           );
         }
