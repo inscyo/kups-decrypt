@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link href="//cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css" rel="stylesheet" id="bootstrap-css">
+    <script crossorigin src="//unpkg.com/react@16/umd/react.production.min.js"></script>
+    <script crossorigin src="//unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+    <script crossorigin src="//cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+    <title>kups decrypt</title>
+    <style type="text/css">
+      body { margin-top:20px; }
+      .panel-title {display: inline;font-weight: bold;}
+      .checkbox.pull-right { margin: 0; }
+      .pl-ziro { padding-left: 0px; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      class Decrypt extends React.Component{
+        constructor(reversed) {
+          super(reversed);
+          this._toMount = this._toMount.bind(this);
+          this._toType = this._toType.bind(this);
+          this.state = { word: undefined, type: "decrypt", outputS: {
+            backgroundColor: "#fff", 
+            color: "#000", 
+            padding: "3px", 
+            borderRadius: "5px", 
+            marginLeft: "10px", 
+            display: "none" }}
+        }
+        _toType = function(e){
+          let type = e.target.value;
+          this.setState((rev) => ({ type: rev.type = type }));
+          console.log(this.state.type);
+        }
+        _toMount = function(e){
+          let reverse = '', target = e.target.value;
+          if (target.length > 0 && target.length < 41){
+            for(let i=target.length-1; i>-1;i--) reverse += target[i];
+            this.setState((rev) => ({ word: rev.word = reverse,
+              outputS: rev.outputS = {
+              backgroundColor: "#fff", 
+              color: "#000", 
+              padding: "3px",
+              borderRadius: "5px", 
+              marginLeft: "10px" }}));
+          } else if(target.length >= 41 && target.length > 0){
+            this.setState((rev) => ({ word: rev.word = <span style={{color: "red"}}>System Error</span> }));
+          } else{
+            this.setState((rev) => ({outputS: rev.outputS = {display: "none"}}))
+          }
+        }
+        render(){
+          return (
+            <div class="col-md-4 justify-content-lg-center">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            3am prayer group decrypt
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label for="cardNumber">
+                                Word</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" autocomplete="off"  onChange={this._toMount} id="cardNumber" placeholder="Enter a word"
+                                    required autofocus />
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ul class="nav nav-pills nav-stacked">
+                    <li class="active"><a href="#"><span class="badge pull-right"></span> Output : <span style={this.state.outputS}>{this.state.word}</span></a>
+                    </li>
+                </ul>
+                <br />
+                <p>&copy; made with reactJS - version 1.0.0</p>
+            </div>
+          );
+        }
+      }
+      ReactDOM.render(<Decrypt />, document.getElementById("root"));
+    </script>
+    <noscript><p>You need to enable JavaScript to run this app</p></noscript>
+  </body>
+</html>
+ 
