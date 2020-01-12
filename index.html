@@ -6,6 +6,8 @@
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <link href="//cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css" rel="stylesheet" id="bootstrap-css">
     <link rel="icon" href="icon.png" type="image/gif" sizes="16x16">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet">
     <script crossorigin src="//unpkg.com/react@16/umd/react.production.min.js"></script>
     <script crossorigin src="//unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
     <script crossorigin src="//cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
@@ -15,6 +17,34 @@
       .panel-title {display: inline;font-weight: bold;}
       .checkbox.pull-right { margin: 0; }
       .pl-ziro { padding-left: 0px; }
+      .console{
+        width: 100%;
+        height: 200px;
+        background-color: #2b2c25;
+        border-radius: 1px;
+        padding: 0px 10px 20px 10px;
+        overflow: auto;
+      }
+      .console-d{
+        vertical-align: top;
+      }
+      .console-text{
+        padding: 10px 0px 0px 0px;
+        color: #71b710;
+        font-size: 15px;
+        margin-block-start: 0 !important;
+        margin-block-end: 0 !important;
+      }
+      .console-i{
+        border: 0;
+        background-color: transparent;
+        width: 100%;
+        height: 50%;
+        outline: none;
+        color: #71b710;
+        padding-bottom: 20px;
+        resize: none;
+      }
     </style>
   </head>
   <body>
@@ -25,12 +55,10 @@
           super(reversed);
           this._toMount = this._toMount.bind(this);
           this._toType = this._toType.bind(this);
+          this._removeNewLine = this._removeNewLine.bind(this);
+          this._txtLimit = this._txtLimit.bind(this);
           this.state = { word: undefined, type: "decrypt", outputS: {
-            backgroundColor: "#fff", 
-            color: "#000", 
-            padding: "3px", 
             borderRadius: "5px", 
-            marginLeft: "10px", 
             display: "none" }}
         }
         _toType = function(e){
@@ -44,15 +72,25 @@
             for(let i=target.length-1; i>-1;i--) reverse += target[i];
             this.setState((rev) => ({ word: rev.word = reverse,
               outputS: rev.outputS = {
-              backgroundColor: "#fff", 
-              color: "#000", 
-              padding: "3px",
-              borderRadius: "5px", 
-              marginLeft: "10px" }}));
+              borderRadius: "5px",
+             }}));
           } else if(target.length >= 41 && target.length > 0){
             this.setState((rev) => ({ word: rev.word = <span style={{color: "red"}}>System Error</span> }));
           } else{
             this.setState((rev) => ({outputS: rev.outputS = {display: "none"}}))
+          }
+        }
+        _removeNewLine = function(e){
+          if(e.keyCode == 13 && !e.shiftKey){
+            e.preventDefault();
+            return false;
+          }
+        }
+        _txtLimit = function(e){
+          if(e.target.value.length > 10){
+            return false;
+          }else{
+            return true;
           }
         }
         render(){
@@ -76,10 +114,13 @@
                         </div>
                     </div>
                 </div>
-                <ul class="nav nav-pills nav-stacked">
-                    <li class="active"><a href="#"><span class="badge pull-right"></span> Output : <span style={this.state.outputS}>{this.state.word}</span></a>
-                    </li>
-                </ul>
+                <div className="console">
+                  <div class="console-d">
+                    <p className="console-text">Copyright (C) Inson Concepcion. All rights reserved</p>
+                    <p className="console-text">PS Github\Inson\Repo\Decrypt</p>
+                  </div>
+                  <p className="console-text"><span style={this.state.outputS}>&gt; Output: "<span style={{textTransform: "uppercase"}}>{this.state.word}</span>"</span></p>
+                </div>
                 <br />
                 <p>&copy; made with reactJS - version 1.0.0</p>
                 <p>Github changes made: <br /> Latest : 01-12-2020 12:06 Pm Philippine Standard Time </p>
